@@ -1,4 +1,4 @@
-package com.dm.favorites.domain.endpoints;
+package com.dm.favorites.domain.endpoints.artist;
 
 import com.dm.favorites.integration.itunes.ArtistSearchResponse;
 import com.dm.favorites.integration.itunes.ItunesService;
