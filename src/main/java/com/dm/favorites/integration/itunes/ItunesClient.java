@@ -13,4 +13,9 @@ public interface ItunesClient {
     @RequestMapping(method = RequestMethod.GET, value = "/search", produces = APPLICATION_JSON_VALUE)
     String search(@RequestParam("entity") String entity, @RequestParam("term") String term);
 
+
+    @RequestMapping(method = RequestMethod.GET, value = "/lookup", produces = APPLICATION_JSON_VALUE)
+    String lookup(@RequestParam("entity") String entity,
+                  @RequestParam("id") String artistId,
+                  @RequestParam("limit") int limit);
 }
