@@ -1,20 +1,23 @@
 package com.dm.favorites.acceptance;
 
-
 import com.dm.favorites.FavoritesApplication;
 import com.dm.favorites.WireMockInitializer;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
-import org.junit.Test;
+
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -30,7 +33,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = {WireMockInitializer.class})
@@ -48,7 +51,7 @@ public class ArtistControllerTest {
     }
 
     @Test
-    public void givenEmployees_whenGetEmployees_thenStatus200() throws Exception {
+    public void whenItunesReturnsThenReturn200AndMinimizedBody() throws Exception {
         mockAbbaSearch();
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders.get("/artists")
