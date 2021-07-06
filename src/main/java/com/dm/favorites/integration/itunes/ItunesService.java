@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +22,13 @@ public class ItunesService {
     private final ItunesClient itunesClient;
     private final ObjectMapper objectMapper;
 
+    @Cacheable(value = "artistCache")
     public ArtistSearchResponse searchArtist(String artistName) {
         var artists = itunesClient.search("allArtist", artistName);
         return parseResponse(artists, ArtistSearchResponse.class);
     }
 
+    @Cacheable(value = "albumCache")
     public AlbumSearchResponse searchTopAlbums(String artistId) {
         var artists = itunesClient.lookup("album", artistId, 5);
         var itunesAlbumSearchResponse = parseResponse(artists, ItunesAlbumSearchResponse.class);
@@ -44,7 +47,6 @@ public class ItunesService {
     //response needs to be parsed from string because itunes api doesnt respect "Accept" header and always returns text
     private <T> T parseResponse(String artists, Class<T> clazz) {
         try {
-            System.out.println(artists);
             return objectMapper.readerFor(clazz).readValue(artists);
         } catch (JsonProcessingException e) {
             log.info("unable to parse itunes response ", e);
@@ -52,6 +54,4 @@ public class ItunesService {
             throw new RuntimeException("Internal service error");
         }
     }
-
-
 }
